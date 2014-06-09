@@ -51,18 +51,22 @@ sercut.flagger_authid = "serc82"
 	1 = 'ValidatorURL?meth=1&comurl='..comurl..'&uid='..uid(The inputted accountID)
 	2 = Custom, code it your self.
 	3 = Updating stuff, don't set this, set sercut.flaggerUpdateMode = 1.
+	
+	
+	Just to clear up why I don't just locally ping the site a phase data there so you don't have to download the page every time someone clicks the validate button.
+	If you want to do it locally, use option two and code it in your self.
 */
 sercut.flagger_method = 1
 
 
--- Above.
+-- Above, only applies if you're using '2'.
 sercut.flagger_customauthurl = "http://derpythemalemare.com"
 
 
 /*
 	The groups, what to phase them by, what flags they get, items, money and models.
 	'class name', 'something to identify it on the page', 'what fags to give', 'any weapons?', <How many uses per char, 0 if you only want it to be used only ever once> 'any money', <How many uses per char, 0 if you only want it to be used only ever once>, 'models and such'
-	The defining string shouldn't have '||', '|*' or '(^*)' as strings are sent between your server and my auth server when running in update mode containing all the groups details, this gets stored as is then exploded and such(Note the auth server only uses the classname and identifier string to phase stuff)	
+	The defining string shouldn't have '||', '(*^)', '(^^)', '(**)' or '(^*)' as strings are sent between your server and my auth server when running in update mode containing all the groups details, this gets stored as is then exploded and such(Note the auth server only uses the classname and identifier string to phase stuff)	
 */
 sercut.flagger_groups = {
 	{"arp_bron",'">ARP Bronze</', 'pe','weapon_pistol', 1, '1000', 1, models = {{'derp.mdl'},{'derpy.mdl'}}},

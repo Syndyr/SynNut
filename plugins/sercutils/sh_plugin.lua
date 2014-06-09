@@ -10,13 +10,10 @@ nut.anim = nut.anim or {}
 	Flagger stuffs.
 */
 if(sercut.flagger==1)then
-	function flaggerRequestAuth(uid)
-		--Placeholder
-	end
 	function flaggerComSetup()
-		if(sercut.flaggerUpdateMode==1&&(sercut.flagger_method==1 || sercut.flagger_method==0))then
-			sercut.flaggerCnames = " "
-			sercut.flaggerIdent = " "
+		if(sercut.flaggerUpdateMode==1&&(sercut.flagger_method==3 || sercut.flagger_method==0))then
+			sercut.flaggerCnames = ""
+			sercut.flaggerIdent = ""
 			for I=1,table.Count(sercut.flagger_groups),1 do
 				--Compiling the groups into Class names and their identifiers so the PHP script can have a field day.
 				sercut.flaggerCnames = sercut.flaggerCnames..'||'..string.Replace(string.Replace(string.Replace(sercut.flagger_groups[I][1],"&","(^*)"),"#","(*^)"),";","(^^)")
@@ -31,7 +28,9 @@ if(sercut.flagger==1)then
 					print(Debs)
 					http.Fetch(Debs,
 					function(code) 
-					
+						if(code == "You're now set up!")then
+							
+						end
 						print(code)
 					
 					end, 
@@ -48,10 +47,52 @@ if(sercut.flagger==1)then
 			end
 		end
 	end
+	
+	function flaggerCheck(ply,id)
+		if(sercut.flagger_method==1)then
+			local ID = id
+			local Debs = sercut.flagger_validater..'?meth=1&comurl='..string.Replace(string.Replace(sercut.flagger_comurl,".","DOT"), "/", "(**)")..'&uid='..ID.."&oid="..ply:SteamID()
+			local Debs = string.Replace(Debs, " ", "_")
+			http.Fetch(Debs,
+			function(code)
+				local Group = code
+				print(code)
+				for I=1,table.Count(sercut.flagger_groups),1 do
+					if(Group==sercut.flagger_groups[I][1])then
+						flaggerGiveGroupPerks(ply, Group)
+						break
+					end
+					if(I == table.Count(sercut.flagger_groups))then
+						print("Nope.avi")
+					end
+				end
+			end, 
+			
+			
+			function(error)
+			
+				print(error)
+				
+			end)
+			print(Debs)
+		end
+	end
+	
+	function flaggerGiveGroupPerks(ply, Group)
+		if(sercut.flagger_method==1)then
+			for I=1,table.Count(sercut.flagger_groups), 1 do
+				if(sercut.flagger_groups[I][1]==Group)then
+					ply:GiveFlag(sercut.flagger_groups[I][3])
+					
+				end
+			end
+		end
+	end
 end
 
 if(sercut.dsgtCP==1)then
 	--Placeholder
+	
 end
 
 /*

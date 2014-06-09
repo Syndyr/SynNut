@@ -18,8 +18,19 @@ if(sercut.flagger==1)then
 			cont:SetPos(10, 75)
 			cont:SetColor(Color(255,255,255,255))
 			cont:SetFont("DermaDefaultBold")
-			cont:SetText("Please enter your forum accountID here:")
+			if(sercut.flagger_method==0)then
+				cont:SetText("Please enter your SteamID here:")
+			elseif(sercut.flagger_method==1)then
+				cont:SetText("Please the URL to your forum account here:")
+			else
+				cont:SetText("YOU'RE USING THE CUSTOM AUTH SYSTEM OR UPDATING!")
+			end
 			cont:SizeToContents()
+			
+			Te:SetParent(self)
+			Te:SetSize(100,15)
+			Te:SetPos(300,75)
+			Te:SetText("")
 			
 			help:SetSize(250,15)
 			help:SetPos(8,90)
@@ -30,13 +41,14 @@ if(sercut.flagger==1)then
 				surface.SetDrawColor(255,255,255,0)
 			end
 			help.DoClick = function()
-				FlaggerHelp(1)		
-				flaggerComSetup()
+				if(Te:GetValue()==""||Te:GetValue()=="This field needs a value!")then
+					Te:SetText("This field needs a value!")
+				else
+					FlaggerHelp(1)
+					flaggerCheck(metaPly, Te:GetValue())
+					flaggerComSetup()
+				end
 			end
-			Te:SetParent(self)
-			Te:SetSize(100,15)
-			Te:SetPos(300,75)
-			Te:SetText("I.E '135-serconker'")
 		else
 			self:SetPos(ScrW() * 0.375, ScrH() * 0.350)
 			self:SetSize(450, 150)
