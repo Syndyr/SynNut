@@ -3,28 +3,27 @@ local PLUGIN = PLUGIN
 local PANEL = PANEL or {}
 function PANEL:Init()
 	local Butt = vgui.Create("DButton", self)
-	local Items = vgui.Create("DListView",self)
-	local Table = vgui.Create("DListView",self)
+	local cItems = vgui.Create("DListView",self)
+	local cTable = vgui.Create("DListView",self)
 	local Left = vgui.Create("DButton",self)
 	local Right = vgui.Create("DButton",self)
-	
 	local inve = LocalPlayer():GetInventory()
-	
+	local cRight = {}
 	
 	self:SetPos(ScrW() * 0.3, ScrH() * 0.300)
 	self:SetSize(750, 450)
 	self:MakePopup()
 	self:SetTitle("Crafty")
 	
-	Items:SetPos(10,100)
-	Items:SetSize(200,300)
-	Items:AddColumn("Inventory")
-	Items:SetMultiSelect(false)
+	cItems:SetPos(10,100)
+	cItems:SetSize(200,300)
+	cItems:AddColumn("Inventory")
+	cItems:SetMultiSelect(false)
 	
-	Table:SetPos(260,100)
-	Table:SetSize(200,300)
-	Table:AddColumn("Crafting area")
-	Table:SetMultiSelect(false)
+	cTable:SetPos(260,100)
+	cTable:SetSize(200,300)
+	cTable:AddColumn("Crafting area")
+	cTable:SetMultiSelect(false)
 	
 	Butt:SetSize(50,50)
 	Butt:SetPos(0,0)
@@ -37,9 +36,17 @@ function PANEL:Init()
 	Left:SetColor(Color(255,255,255,255))
 	Left:SetText("<<")
 	Left.DoClick = function()
-		local Item = Table:GetSelectedLine()
-		Table:RemoveLine(Item)
-		Items:AddLine(Crafty.inv[Item])
+		local Item = cTable:GetSelectedLine()
+		cItems:AddLine(cRight[Item])
+		cTable:RemoveLine(Item)
+		print(Crafty.inv[Item])
+		print(cRight[Item])
+		print("#")
+		table.insert(Crafty.inv,cRight[Item])
+		table.remove(cRight, Item)
+		PrintTable(cRight)
+		print("#")
+		--crafyFindUsableRecipies(cRight, LocalPlayer())
 	end
 	
 	
@@ -49,17 +56,36 @@ function PANEL:Init()
 	Right:SetColor(Color(255,255,255,255))
 	Right:SetText(">>")
 	Right.DoClick = function()
-		local Item = Items:GetSelectedLine()
-		Items:RemoveLine(Item)
-		Table:AddLine(Crafty.inv[Item])
+		local Item = cItems:GetSelectedLine()
+		cTable:AddLine(Crafty.inv[Item])
+		cItems:RemoveLine(Item)
+		print(Crafty.inv[Item])
+		print(cRight[Item])
+		print("#")
+		table.insert(cRight, Crafty.inv[Item])
+		table.remove(Crafty.inv, Item)
+		PrintTable(cRight)
+		print("#")
+		--crafyFindUsableRecipies(cRight, LocalPlayer())
 	end
+	
+	
+	
 	Crafty.inv = {}
 	for k, v in pairs(inve) do
 		Crafty.inv[table.Count(Crafty.inv)+1] = k
-		Items:AddLine(k)
+		cItems:AddLine(k)
 	end
+	
+		
+		
+		
 	Butt.DoClick = function()
-		PrintTable(inve)
+		--PrintTable(inve)
+		local Item = cItems:GetSelectedLine()
+		local List = cRight
+		print(Item)
+		--crafyFindUsableRecipies(Crafty.inv, LocalPlayer())
 	end
 end
 vgui.Register("serc_Crafty", PANEL, "DFrame")
